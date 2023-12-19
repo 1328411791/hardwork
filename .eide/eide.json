@@ -24,8 +24,9 @@
           },
           {
             "path": "Driver/Button.c"
-          },{
-            "path":"Driver/InfraredDriver.c"
+          },
+          {
+            "path": "Driver/InfraredDriver.c"
           }
         ],
         "folders": []
@@ -62,6 +63,9 @@
           },
           {
             "path": "User/Tracking.c"
+          },
+          {
+            "path": "User/Controller.c"
           }
         ],
         "folders": []
