@@ -1,0 +1,44 @@
+C51 COMPILER V9.60.7.0   A14_BUZZER                                                        11/30/2023 20:59:20 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE A14_BUZZER
+OBJECT MODULE PLACED IN .\Objects\A14_buzzer.obj
+COMPILER INVOKED BY: D:\keilC51\C51\BIN\C51.EXE Driver\A14_buzzer.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\User;.\Syste
+                    -m) DEBUG OBJECTEXTEND PRINT(.\Listings\A14_buzzer.lst) TABS(2) OBJECT(.\Objects\A14_buzzer.obj)
+
+line level    source
+
+   1          #include "global.h"                  // Device heade
+   2          
+   3          
+   4          void Buzzer_GPIO_Init(void) {
+   5   1        GPIO_InitTypeDef GPIO_InitStructure;
+   6   1        
+   7   1        GPIO_InitStructure.GPIO_Pin = BUZZER_PIN;
+   8   1        GPIO_InitStructure.GPIO_Mode = GPIO_PullUp;
+   9   1        GPIO_Init(BUZZER_PORT, &GPIO_InitStructure);
+  10   1        
+  11   1      }
+  12          
+  13          void Buzzer_TurnOn(uint8_t on) {
+  14   1        if (on) {
+  15   2          GPIO_SetBits(BUZZER_PORT, BUZZER_PIN);//¹Ø
+  16   2        }else {
+  17   2          GPIO_ResetBits(BUZZER_PORT, BUZZER_PIN);//¿ª
+  18   2        }
+  19   1      }
+  20          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     36    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       2
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

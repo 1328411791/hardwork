@@ -1,0 +1,63 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.38.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 li hanyu, 1, LIC=----
+ 
+Tool Versions:
+Toolchain:       PK51 Prof. Develpers Kit  Version: 9.60.7.0
+Toolchain Path:  C:\Keil_v5\C51\BIN
+C Compiler:      C51.exe V9.60.7.0
+Assembler:       A51.exe V8.2.7.0
+Linker/Locator:  BL51.exe V6.22.4.0
+Library Manager: LIB51.exe V4.30.1.0
+Hex Converter:   OH51.exe V2.7.0.0
+CPU DLL:         S8051.DLL V3.125.1.0
+Dialog DLL:      DP51.DLL V2.69.0.0
+Target DLL:      Nuvoton_8051_Keil_uVision_Driver.dll V3.09
+Dialog DLL:      TP51.DLL V2.60.1.0
+ 
+<h2>Project:</h2>
+C:\Users\li hanyu\Desktop\硬件综合实践资料\DEMO\RICHBOT_A14_51.uvproj
+Project File Date:  11/30/2023
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+compiling main.c...
+compiling A14_motor.c...
+compiling OLED.c...
+compiling A14_uart.c...
+compiling gpio.c...
+compiling RICHBOT_timer.c...
+compiling PCA.c...
+compiling USART.C...
+linking...
+BL51 BANKED LINKER/LOCATER V6.22.4.0 - SN: Eval Version
+COPYRIGHT (C) 1987-2021, Arm Limited or its Affiliates. All rights reserved.
+".\Objects\main.obj",
+".\Objects\A14_motor.obj",
+".\Objects\OLED.obj",
+".\Objects\A14_uart.obj",
+".\Objects\gpio.obj",
+".\Objects\RICHBOT_timer.obj",
+".\Objects\PCA.obj",
+".\Objects\USART.obj" 
+TO ".\Objects\RICHBOT_A14_51" 
+PRINT(".\Listings\RICHBOT_A14_51.m51") RAMSIZE(256) 
+DISABLEWARNING (16) 
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 16DEH BYTE (285%) *
+******************************************************************************
+Program Size: data=13.3 xdata=99 code=6512
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
+*** FATAL ERROR L250: CODE SIZE LIMIT IN RESTRICTED VERSION EXCEEDED
+    MODULE:  C:\KEIL_V5\C51\LIB\C51L.LIB (-----)
+    LIMIT:   0800H BYTES
+Target not created.
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>

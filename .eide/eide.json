@@ -1,0 +1,100 @@
+{
+  "name": "RICHBOT_A14_51",
+  "type": "C51",
+  "dependenceList": [],
+  "srcDirs": [],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "Driver",
+        "files": [
+          {
+            "path": "Driver/A14_motor.c"
+          },
+          {
+            "path": "Driver/OLED.c"
+          },
+          {
+            "path": "Driver/A14_uart.c"
+          },
+          {
+            "path": "Driver/TrackingDriver.c"
+          },
+          {
+            "path": "Driver/Button.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "System",
+        "files": [
+          {
+            "path": "System/gpio.c"
+          },
+          {
+            "path": "System/RICHBOT_timer.c"
+          },
+          {
+            "path": "System/PCA.c"
+          },
+          {
+            "path": "System/USART.C"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "User",
+        "files": [
+          {
+            "path": "User/main.c"
+          },
+          {
+            "path": "User/global.h"
+          },
+          {
+            "path": "User/config.h"
+          }
+        ],
+        "folders": []
+      }
+    ]
+  },
+  "outDir": "build",
+  "deviceName": null,
+  "packDir": null,
+  "miscInfo": {
+    "uid": "763038d8f41f531b54f3f3a0762457f5"
+  },
+  "targets": {
+    "Target 1": {
+      "excludeList": [],
+      "toolchain": "Keil_C51",
+      "compileConfig": {
+        "options": "null"
+      },
+      "uploader": "Custom",
+      "uploadConfig": {
+        "bin": "",
+        "commandLine": "",
+        "eraseChipCommand": ""
+      },
+      "uploadConfigMap": {},
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          "../../../../../Keil_v5/C51/INC/Atmel",
+          "User",
+          "System"
+        ],
+        "libList": [],
+        "sourceDirList": [],
+        "defineList": []
+      }
+    }
+  },
+  "version": "3.3"
+}
