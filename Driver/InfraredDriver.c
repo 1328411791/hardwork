@@ -5,7 +5,7 @@ char str[16];
 unsigned char i, j;
 uint8_t IR_Data[4]    = {0}; // 存储红外数据
 unsigned int IR_Count = 0, IR_HighTime = 0;
-uint16_t *IR_Flag;
+uint16_t IR_Flag = 0;
 
 void Infrared_Init(uint16_t *flag)
 {
@@ -19,12 +19,11 @@ void Infrared_Init(uint16_t *flag)
     IT1 = 1; // INT1下降沿触发
     EX1 = 1; // INT1中断允许
     EA  = 1; // 总中断允许
-
-    IR_Flag = flag;
 }
 
 void Infrared_Scan() interrupt INT1_VECTOR
 {
+    EA = 0;
     DelayMs(9); // 延时9ms
     if (Infrared_Pin == 0) {
         IR_Count = 1000;
@@ -76,13 +75,18 @@ void Infrared_Scan() interrupt INT1_VECTOR
             IR_Data[i] = 0;
         return;
     }
-    OLED_Clear();
-    sprintf(str, "%X %X", IR_Data[0], IR_Data[1], IR_Data[2], IR_Data[3]);
-    OLED_ShowString(1, 1, str);
-    sscanf(str, "%X %X", &IR_Data[0], IR_Flag);
-    *IR_Flag = *IR_Flag >> 8;
-    sprintf(str, "%X", *IR_Flag);
+    //OLED_Clear();
+    //sprintf(str, "%X %X", IR_Data[0], IR_Data[1], IR_Data[2], IR_Data[3]);
+    //OLED_ShowString(1, 1, str);
+    sscanf(str, "%X %X", &IR_Data[0], &IR_Flag);
+    IR_Flag = IR_Flag >> 8;
+    sprintf(str, "%X", IR_Flag);
     OLED_ShowString(4, 1, str);
+    //DelayUs(500);
+    EA = 1;
+}
 
-    DelayMs(1000);
+uint16_t get_Flag()
+{
+    return IR_Flag;
 }

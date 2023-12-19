@@ -12,9 +12,9 @@ typedef unsigned short int uint16_t;
 typedef unsigned long uint32_t;
 
 /*A14_motor.c*/
-#define PWM_DUTY          (Main_Fosc_KHZ / 10) // 定义PWM的周期，10KHz
-#define PWM_HIGH_MIN      500                  // 限制PWM输出的最小占空比。
-#define PWM_HIGH_MAX      (PWM_DUTY - 1)       // 限制PWM输出的最大占空比。
+#define PWM_DUTY          (Main_Fosc_KHZ / 10) // ????PWM???????10KHz
+#define PWM_HIGH_MIN      500                  // ????PWM???????С?????
+#define PWM_HIGH_MAX      (PWM_DUTY - 1)       // ????PWM?????????????
 #define Motor_Port        GPIO_P0
 #define Right_MotoA_Pin   GPIO_Pin_0
 #define Right_MotoB_Pin   GPIO_Pin_1
@@ -92,6 +92,7 @@ uint8_t Button_Scan(void);
 
 void Infrared_Init(uint16_t *flag);
 void Infrared_Scan(void);
+uint16_t get_Flag(void);
 
 #define K_UP    0x46
 #define K_DOWN  0x15
@@ -118,13 +119,13 @@ void Infrared_Scan(void);
 
 typedef struct
 {
-    uint8_t TIM_Mode;      // 工作模式,  	TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
-    uint8_t TIM_Polity;    // 优先级设置	PolityHigh,PolityLow
-    uint8_t TIM_Interrupt; // 中断允许		ENABLE,DISABLE
-    uint8_t TIM_ClkSource; // 时钟源		TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
-    uint8_t TIM_ClkOut;    // 可编程时钟输出,	ENABLE,DISABLE
-    uint16_t TIM_Value;    // 装载初值
-    uint8_t TIM_Run;       // 是否运行		ENABLE,DISABLE
+    uint8_t TIM_Mode;      // ??????,  	TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
+    uint8_t TIM_Polity;    // ?????????	PolityHigh,PolityLow
+    uint8_t TIM_Interrupt; // ?ж?????		ENABLE,DISABLE
+    uint8_t TIM_ClkSource; // ????		TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
+    uint8_t TIM_ClkOut;    // ??????????,	ENABLE,DISABLE
+    uint16_t TIM_Value;    // ?????
+    uint8_t TIM_Run;       // ???????		ENABLE,DISABLE
 } TIM_InitTypeDef;
 
 extern int Timer_Inilize(uint8_t TIM, TIM_InitTypeDef *TIMx);
@@ -143,5 +144,8 @@ extern void uart1_Write(const void *vbuf, uint8_t len);
 
 /*tracking.c*/
 void Tracking(void);
+
+/*Controller.c*/
+void Controller();
 
 #endif

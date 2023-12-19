@@ -1,7 +1,7 @@
 #include "global.h" // Device heade
 
 uint8_t opt;
-uint16_t M_FLAG = 0;
+char str1[16];
 
 void System_Init(void)
 {
@@ -13,7 +13,7 @@ void System_Init(void)
     Tracking_Init();
     DelayMs(100);
     Button_Init();
-    Infrared_Init(&M_FLAG);
+    Infrared_Init();
 }
 
 void main(void)
@@ -21,15 +21,23 @@ void main(void)
     // 初始化
     System_Init();
 
-    opt = 4;
-
-    switch (opt) {
-        case 1:
-            OLED_ShowString(4, 1, "1.Tracking");
-            Tracking();
-            break;
-        default:
-            OLED_ShowString(4, 1, "Default");
-            break;
+    opt = 2;
+    while (TRUE) {
+        switch (opt) {
+            case 1:
+                OLED_ShowString(4, 1, "1.Tracking");
+                Tracking();
+                break;
+            case 2:
+                Controller();
+            default:
+                sprintf(str1, "%X", get_Flag());
+                OLED_ShowString(3, 1, str1);
+                OLED_ShowString(4, 1, "Default");
+                break;
+        }
+        DelayMs(1000);
+    }
+    for (;;) {
     }
 }
