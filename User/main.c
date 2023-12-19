@@ -1,6 +1,7 @@
 #include "global.h" // Device heade
 
 uint8_t opt;
+uint16_t M_FLAG = 0;
 
 void System_Init(void)
 {
@@ -12,7 +13,7 @@ void System_Init(void)
     Tracking_Init();
     DelayMs(100);
     Button_Init();
-    Infrared_Init();
+    Infrared_Init(&M_FLAG);
 }
 
 void main(void)
