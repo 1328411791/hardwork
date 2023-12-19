@@ -87,6 +87,12 @@ void OLED_ShowString(uint8_t Line, uint8_t Column, char *String);
 void Button_Init(void);
 uint8_t Button_Scan(void);
 
+/*InfraredDriver.c*/
+#define Infrared_Pin P33
+
+void Infrared_Init(void);
+void Infrared_Scan(void);
+
 /*RTCHBOT_timer.c*/
 #define Timer0                    0
 #define Timer1                    1
@@ -127,5 +133,8 @@ extern void DelayUs(uint16_t us);
 extern void Usart1_Init(uint16_t t_baud);
 extern uint8_t uart1_Read(void *vbuf, uint8_t len);
 extern void uart1_Write(const void *vbuf, uint8_t len);
+
+/*tracking.c*/
+void Tracking(void);
 
 #endif
