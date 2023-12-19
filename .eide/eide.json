@@ -62,6 +62,9 @@
           },
           {
             "path": "User/Tracking.c"
+          },
+          {
+            "path":"User/Controller.c"
           }
         ],
         "folders": []

@@ -7,7 +7,7 @@ uint8_t IR_Data[4]    = {0}; // 存储红外数据
 unsigned int IR_Count = 0, IR_HighTime = 0;
 uint16_t IR_Flag = 0;
 
-void Infrared_Init(void)
+void Infrared_Init(uint16_t *flag)
 {
     // 设置为INT0 中断
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -19,10 +19,13 @@ void Infrared_Init(void)
     IT1 = 1; // INT1下降沿触发
     EX1 = 1; // INT1中断允许
     EA  = 1; // 总中断允许
+
+    IR_Flag = flag;
 }
 
 void Infrared_Scan() interrupt INT1_VECTOR
 {
+    EA = 0;
     DelayMs(9); // 延时9ms
     if (Infrared_Pin == 0) {
         IR_Count = 1000;
@@ -76,11 +79,10 @@ void Infrared_Scan() interrupt INT1_VECTOR
     }
     OLED_Clear();
     sprintf(str, "%X %X", IR_Data[0], IR_Data[1], IR_Data[2], IR_Data[3]);
-    OLED_ShowString(1, 1, str);
+    OLED_ShowString(2, 1, str);
     sscanf(str, "%X %X", &IR_Data[0], &IR_Flag);
-    IR_Flag = IR_Flag >> 8;
+    IR_Flag = IR_Flag & 0x00FF;
     sprintf(str, "%X", IR_Flag);
     OLED_ShowString(4, 1, str);
-
-    DelayMs(1000);
+    EA = 1;
 }

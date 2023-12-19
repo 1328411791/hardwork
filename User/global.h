@@ -90,8 +90,15 @@ uint8_t Button_Scan(void);
 /*InfraredDriver.c*/
 #define Infrared_Pin P33
 
-void Infrared_Init(void);
+void Infrared_Init(uint16_t *flag);
 void Infrared_Scan(void);
+
+#define K_UP    0x46
+#define K_DOWN  0x15
+#define K_LEFT  0x44
+#define K_RIGHT 0x43
+#define K_STOP  0x45
+#define K_SOUND 0x40
 
 /*RTCHBOT_timer.c*/
 #define Timer0                    0
@@ -136,5 +143,8 @@ extern void uart1_Write(const void *vbuf, uint8_t len);
 
 /*tracking.c*/
 void Tracking(void);
+
+/*Controller.c*/
+void Controller(int *flag);
 
 #endif
