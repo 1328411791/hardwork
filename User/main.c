@@ -21,8 +21,9 @@ void main(void)
     // 初始化
     System_Init();
 
-    opt = 2;
+    opt = 4;
     while (TRUE) {
+        OLED_Clear();
         switch (opt) {
             case 1:
                 OLED_ShowString(4, 1, "1.Tracking");
@@ -31,13 +32,9 @@ void main(void)
             case 2:
                 Controller();
             default:
-                sprintf(str1, "%X", get_Flag());
-                OLED_ShowString(3, 1, str1);
                 OLED_ShowString(4, 1, "Default");
                 break;
         }
-        DelayMs(1000);
-    }
-    for (;;) {
+        DelayMs(500);
     }
 }

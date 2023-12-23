@@ -90,9 +90,9 @@ uint8_t Button_Scan(void);
 /*InfraredDriver.c*/
 #define Infrared_Pin P33
 
-void Infrared_Init(uint16_t *flag);
+void Infrared_Init();
 void Infrared_Scan(void);
-uint16_t get_Flag(void);
+void Controller();
 
 #define K_UP    0x46
 #define K_DOWN  0x15
@@ -144,8 +144,5 @@ extern void uart1_Write(const void *vbuf, uint8_t len);
 
 /*tracking.c*/
 void Tracking(void);
-
-/*Controller.c*/
-void Controller();
 
 #endif
