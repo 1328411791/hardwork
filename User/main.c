@@ -15,7 +15,7 @@ void System_Init(void)
     Tracking_Init();
     DelayMs(100);
     Button_Init();
-    Infrared_Init(&Flag);
+    Infrared_Init();
 }
 
 void main(void)

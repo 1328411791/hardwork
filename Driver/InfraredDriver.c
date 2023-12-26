@@ -19,8 +19,6 @@ void Infrared_Init()
     IT1 = 1; // INT1下降沿触发
     EX1 = 1; // INT1中断允许
     EA  = 1; // 总中断允许
-
-    IR_Flag = flag;
 }
 
 void Infrared_Scan() interrupt INT1_VECTOR
