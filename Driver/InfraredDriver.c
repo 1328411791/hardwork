@@ -100,18 +100,18 @@ void Controller()
 
     switch (IR_Flag) {
         case K_UP:
-            Motor_Run(FORWARD, PWM_DUTY / 100 * 30);
+            Motor_Run(FORWARD, PWM_DUTY / 100 * 50);
             IR_Flag = 0;
             break;
         case K_DOWN:
-            Motor_Run(BACKWARDS, PWM_DUTY / 100 * 30);
+            Motor_Run(BACKWARDS, PWM_DUTY / 100 * 50);
             IR_Flag = 0;
         case K_LEFT:
-            Motor_Run(SPINTURNLEFT, PWM_DUTY / 100 * 30);
+            Motor_Run(SPINTURNLEFT, PWM_DUTY / 100 * 50);
             IR_Flag = 0;
             break;
         case K_RIGHT:
-            Motor_Run(SPINTURNRIGHT, PWM_DUTY / 100 * 370);
+            Motor_Run(SPINTURNRIGHT, PWM_DUTY / 100 * 50);
             IR_Flag = 0;
             break;
         case K_STOP:
