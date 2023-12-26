@@ -103,6 +103,9 @@ void Controller();
 #define K_SPINLEFT  0x07
 #define K_SPINRIGHT 0x09
 #define K_0         0x19
+#define K_1         0x0C
+#define K_2         0x18
+#define K_3         0x5E
 
 /*RTCHBOT_timer.c*/
 #define Timer0                    0
