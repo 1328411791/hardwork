@@ -1,6 +1,7 @@
 #include "global.h" // Device heade
 
 uint8_t opt;
+
 int Flag = 0;
 char str1[16];
 
@@ -23,7 +24,6 @@ void main(void)
     System_Init();
 
     opt = 4;
-
     while (TRUE) {
         OLED_Clear();
         switch (opt) {
@@ -32,15 +32,11 @@ void main(void)
                 Tracking();
                 break;
             case 2:
-                OLED_ShowString(4, 1, "2.Controller");
-                Controller(&Flag);
-                break;
+                Controller();
             default:
-                sprintf(str1, "%X", Flag);
-                OLED_ShowString(3, 1, str1);
                 OLED_ShowString(4, 1, "Default");
                 break;
         }
-        DelayMs(100);
+        DelayMs(500);
     }
 }

@@ -24,8 +24,9 @@
           },
           {
             "path": "Driver/Button.c"
-          },{
-            "path":"Driver/InfraredDriver.c"
+          },
+          {
+            "path": "Driver/InfraredDriver.c"
           }
         ],
         "folders": []

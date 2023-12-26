@@ -21,7 +21,10 @@
             "*.cc": "cpp",
             "STC15F2K60S2.H": "cpp",
             "USART.C": "cpp",
-            "STC12C5A60S2.H": "cpp"
+            "STC12C5A60S2.H": "cpp",
+            "CONTROLLER.C": "cpp",
+            "STDIO.H": "cpp",
+            "BUTTON.C": "cpp"
         },
         "[yaml]": {
             "editor.insertSpaces": true,
