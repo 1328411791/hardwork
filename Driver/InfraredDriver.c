@@ -1,18 +1,20 @@
 #include "global.h"
 // 红外接收模块
 
+// NEC协议时间定义（单位：微秒）
+unsigned char Time_width;
+unsigned char Ir_Value[4];
+unsigned char i, j, count;
+uint8_t command = 0;
+
 char str[16];
-unsigned char i, j;
-uint8_t IR_Data[4]    = {0}; // 存储红外数据
-unsigned int IR_Count = 0, IR_HighTime = 0;
-uint16_t IR_Flag = 0;
 
 void Infrared_Init()
 {
     // 设置为INT0 中断
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode = GPIO_HighZ;
-    GPIO_InitStructure.GPIO_Pin  = Infrared_Pin;
+    GPIO_InitStructure.GPIO_Pin  = IR_PIN;
     GPIO_Init(GPIO_P3, &GPIO_InitStructure);
 
     // 设置INT1中断
@@ -21,106 +23,127 @@ void Infrared_Init()
     EA  = 1; // 总中断允许
 }
 
-void Infrared_Scan() interrupt INT1_VECTOR
+// 解码NEC红外信号
+void decodeIR() interrupt INT1_VECTOR
 {
-    EA  = 0;
-    EX1 = 0;
-    DelayMs(9); // 延时9ms
-
-    if (Infrared_Pin == 0) {
-        IR_Count = 1000;
-        while (!Infrared_Pin && IR_Count) // 等待引导信号9ms低电平结束，若超过10ms强制退出
+    EA         = 0;
+    Time_width = 0;
+    EX0        = 0;  // 关闭中断防止干扰
+    if (IR_PIN == 0) // 判断是否是正确的信号，排除干扰
+    {
+        count = 95;                          // 90 * 0.1ms = 9ms,超过说明接收到错误的信号
+        while ((IR_PIN == 0) && (count > 0)) // 等待9ms的低电平过去
         {
-            DelayUs(10); // 1000*10us
-            IR_Count--;
-            if (IR_Count == 0)
-                goto end;
+            DelayUs(100);
+            count--;
         }
-        if (Infrared_Pin) // 引导信号9ms低电平已过，进入4.5ms高电平
+        if (IR_PIN == 1) // 9ms低电平已过去
         {
-            IR_Count = 500;
-            while (Infrared_Pin && IR_Count) // 等待引导信号4.5ms高电平结束，若超过5ms强制退出
+            count = 50;                          // 45 * 0.1ms = 4.5ms
+            while ((IR_PIN == 1) && (count > 0)) // 等待4.5ms的高电平过去
             {
-                DelayUs(10);
-                IR_Count--;
-                if (IR_Count == 0) goto end;
+                DelayUs(100);
+                count--;
             }
-            for (i = 0; i < 4; i++) // 循环4次，读取4个字节数据
+            for (i = 0; i < 4; i++) // 共有4组数据
             {
-                for (j = 0; j < 8; j++) // 循环8次读取每位数据即一个字节
+                for (j = 0; j < 8; j++) // 接收一组数据
                 {
-                    IR_Count = 600;
-                    while (!Infrared_Pin && IR_Count) // 等待数据1或0前面的0.56ms结束，若超过6ms强制退出
-                    {
-                        DelayUs(10);
-                        IR_Count--;
-                        if (IR_Count == 0) goto end;
-                    }
-                    IR_Count = 20;
-                    while (Infrared_Pin) // 等待数据1或0后面的高电平结束，若超过2ms强制退出
+                    count = 6;                           // 6*0.1ms=0.6ms=600us
+                    while ((IR_PIN == 0) && (count > 0)) // 等待560us低电平过去
                     {
                         DelayUs(100);
-                        IR_HighTime++;
-                        if (IR_HighTime > 20) goto end; // 20*100us
+                        count--;
                     }
-                    IR_Data[i] >>= 1;    // 先读取的为低位，然后是高位
-                    if (IR_HighTime > 8) // 如果高电平时间大于0.8ms，数据则为1，否则为0
-                        IR_Data[i] |= 0x80;
-                    IR_HighTime = 0; // 重新清零，等待下一次计算时间
+                    count = 55;                          // 50*0.1ms=5ms
+                    while ((IR_PIN == 1) && (count > 0)) // 计算高电平的时间宽度
+                    {
+                        DelayUs(100); // 2.24ms/0.1ms=23
+                        Time_width++; // 最长计算到23  55-23=32
+                        count--;
+                        if (Time_width > 35) // 20*0.1=2.8ms>2.24ms
+                        {                    // 说明已经超出信号范围
+                            EX0 = 1;         // 打开外部中断
+                            return;          // 错误则直接结束中断
+                        }
+                    }
+                    Ir_Value[i] >>= 1;   // i表示第几组数据
+                    if (Time_width >= 8) // 如果高电平大于1.12ms，
+                    {                    // 那么是1，否则默认为0，直接移位
+                        Ir_Value[i] |= 0x80;
+                    }
+                    Time_width = 0; // 用完要清零
                 }
             }
         }
+        if (Ir_Value[2] != ~Ir_Value[3]) { return; } // 错误则重新开始，退出中断
     }
-    if (IR_Data[2] != ~IR_Data[3]) // 校验控制码与反码，错误则返回
-    {
-        for (i = 0; i < 4; i++)
-            IR_Data[i] = 0;
-        goto end;
-    }
-    // OLED_Clear();
-    sprintf(str, "%X %X", IR_Data[0], IR_Data[1], IR_Data[2], IR_Data[3]);
-    OLED_ShowString(2, 1, str);
-    sscanf(str, "%X %X", &IR_Data[0], &IR_Flag);
-    IR_Flag = IR_Flag & 0x00FF;
-    sprintf(str, "%X", IR_Flag);
-    OLED_ShowString(3, 1, str);
-    DelayUs(500);
 
-    // Controller();
-end:
-    EA  = 1;
-    EX1 = 1;
-    IE1 = 0;
+    command = Ir_Value[2];
+    sprintf(str, "0x%X", command);
+    OLED_ShowString(3, 1, str);
+
+    EA = 1;
 }
 
 void Controller()
 {
-    sprintf(str, "%X", IR_Flag);
-    OLED_ShowString(3, 1, str);
-
-    switch (IR_Flag) {
+    switch (Ir_Value[2]) {
         case K_UP:
             Motor_Run(FORWARD, PWM_DUTY / 100 * 50);
-            IR_Flag = 0;
+            OLED_ShowString(1, 1, "UP");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
             break;
         case K_DOWN:
             Motor_Run(BACKWARDS, PWM_DUTY / 100 * 50);
-            IR_Flag = 0;
+            OLED_ShowString(1, 1, "DOWN");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
+            break;
         case K_LEFT:
-            Motor_Run(SPINTURNLEFT, PWM_DUTY / 100 * 50);
-            IR_Flag = 0;
+            Motor_Run(SPINTURNLEFT, PWM_DUTY / 100 * 30);
+            OLED_ShowString(1, 1, "LEFT");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
             break;
         case K_RIGHT:
-            Motor_Run(SPINTURNRIGHT, PWM_DUTY / 100 * 50);
-            IR_Flag = 0;
+            Motor_Run(SPINTURNRIGHT, PWM_DUTY / 100 * 30);
+            OLED_ShowString(1, 1, "RIGHT");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
             break;
         case K_STOP:
             Motor_Run(STOP, 0);
-            IR_Flag = 0;
+            OLED_ShowString(1, 1, "STOP");
+            break;
+        case K_SOUND:
+            OLED_ShowString(1, 1, "SOUND");
+            break;
+        case K_SPINLEFT:
+            Motor_Run(SPINTURNLEFT, PWM_DUTY / 100 * 100);
+            OLED_ShowString(1, 1, "SPINLEFT");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
+            break;
+        case K_SPINRIGHT:
+            Motor_Run(SPINTURNRIGHT, PWM_DUTY / 100 * 100);
+            OLED_ShowString(1, 1, "SPINRIGHT");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
+            break;
+        case K_0:
+            Motor_Run(FORWARD, PWM_DUTY / 100 * 80);
+            OLED_ShowString(1, 1, "0");
+            DelayMs(500);
+            Motor_Run(STOP, 0);
             break;
         default:
+            OLED_ShowString(1, 1, "DEFAULT");
             Motor_Run(STOP, 0);
             break;
     }
-    DelayUs(100);
+    for (i = 0; i < 4; i++) {
+        Ir_Value[i] = 0;
+    }
 }

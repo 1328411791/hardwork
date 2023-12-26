@@ -12,9 +12,9 @@ typedef unsigned short int uint16_t;
 typedef unsigned long uint32_t;
 
 /*A14_motor.c*/
-#define PWM_DUTY          (Main_Fosc_KHZ / 10) // ¶¨ÒåPWMµÄÖÜÆÚ£¬10KHz
-#define PWM_HIGH_MIN      500                  // ÏÞÖÆPWMÊä³öµÄ×îÐ¡Õ¼¿Õ±È¡£
-#define PWM_HIGH_MAX      (PWM_DUTY - 1)       // ÏÞÖÆPWMÊä³öµÄ×î´óÕ¼¿Õ±È¡£
+#define PWM_DUTY          (Main_Fosc_KHZ / 10) // ï¿½ï¿½ï¿½ï¿½PWMï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½10KHz
+#define PWM_HIGH_MIN      500                  // ï¿½ï¿½ï¿½ï¿½PWMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡Õ¼ï¿½Õ±È¡ï¿½
+#define PWM_HIGH_MAX      (PWM_DUTY - 1)       // ï¿½ï¿½ï¿½ï¿½PWMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Õ±È¡ï¿½
 #define Motor_Port        GPIO_P0
 #define Right_MotoA_Pin   GPIO_Pin_0
 #define Right_MotoB_Pin   GPIO_Pin_1
@@ -88,18 +88,21 @@ void Button_Init(void);
 uint8_t Button_Scan(void);
 
 /*InfraredDriver.c*/
-#define Infrared_Pin P33
+#define IR_PIN P33
 
 void Infrared_Init();
 void Infrared_Scan(void);
 void Controller();
 
-#define K_UP    0x46
-#define K_DOWN  0x15
-#define K_LEFT  0x44
-#define K_RIGHT 0x43
-#define K_STOP  0x45
-#define K_SOUND 0x40
+#define K_UP        0x46
+#define K_DOWN      0x15
+#define K_LEFT      0x44
+#define K_RIGHT     0x43
+#define K_STOP      0x45
+#define K_SOUND     0x40
+#define K_SPINLEFT  0x07
+#define K_SPINRIGHT 0x09
+#define K_0         0x19
 
 /*RTCHBOT_timer.c*/
 #define Timer0                    0
@@ -119,13 +122,13 @@ void Controller();
 
 typedef struct
 {
-    uint8_t TIM_Mode;      // ¹¤×÷Ä£Ê½,  	TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
-    uint8_t TIM_Polity;    // ÓÅÏÈ¼¶ÉèÖÃ	PolityHigh,PolityLow
-    uint8_t TIM_Interrupt; // ÖÐ¶ÏÔÊÐí		ENABLE,DISABLE
-    uint8_t TIM_ClkSource; // Ê±ÖÓÔ´		TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
-    uint8_t TIM_ClkOut;    // ¿É±à³ÌÊ±ÖÓÊä³ö,	ENABLE,DISABLE
-    uint16_t TIM_Value;    // ×°ÔØ³õÖµ
-    uint8_t TIM_Run;       // ÊÇ·ñÔËÐÐ		ENABLE,DISABLE
+    uint8_t TIM_Mode;      // ï¿½ï¿½ï¿½ï¿½Ä£Ê½,  	TIM_16BitAutoReload,TIM_16Bit,TIM_8BitAutoReload,TIM_16BitAutoReloadNoMask
+    uint8_t TIM_Polity;    // ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½	PolityHigh,PolityLow
+    uint8_t TIM_Interrupt; // ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½		ENABLE,DISABLE
+    uint8_t TIM_ClkSource; // Ê±ï¿½ï¿½Ô´		TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_Ext
+    uint8_t TIM_ClkOut;    // ï¿½É±ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½,	ENABLE,DISABLE
+    uint16_t TIM_Value;    // ×°ï¿½Ø³ï¿½Öµ
+    uint8_t TIM_Run;       // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½		ENABLE,DISABLE
 } TIM_InitTypeDef;
 
 extern int Timer_Inilize(uint8_t TIM, TIM_InitTypeDef *TIMx);

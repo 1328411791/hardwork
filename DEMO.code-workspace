@@ -24,7 +24,8 @@
             "STC12C5A60S2.H": "cpp",
             "CONTROLLER.C": "cpp",
             "STDIO.H": "cpp",
-            "BUTTON.C": "cpp"
+            "BUTTON.C": "cpp",
+            "A14_MOTOR.C": "cpp"
         },
         "[yaml]": {
             "editor.insertSpaces": true,

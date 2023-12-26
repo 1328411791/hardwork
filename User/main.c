@@ -23,7 +23,7 @@ void main(void)
     // 初始化
     System_Init();
 
-    opt = 4;
+    opt = 2;
     while (TRUE) {
         OLED_Clear();
         switch (opt) {
@@ -34,7 +34,7 @@ void main(void)
             case 2:
                 Controller();
             default:
-                OLED_ShowString(4, 1, "Default");
+                // OLED_ShowString(4, 1, "Default");
                 break;
         }
         DelayMs(500);
